@@ -8,20 +8,19 @@ namespace BattlePlanner
 	public class Unit
 	{
 		public string Name { get; }
-		public string UnitId { get; private set; }
+		public string UnitId { get;}
 		private static List<string> unitIds = new List<string>();
 		private static List<Unit> unitList = new List<Unit>();
-		[JsonProperty] private List<Pomoc> pomocList=new List<Pomoc>();
-		//[JsonProperty] private Dictionary<Resource, int> resourcesList = new Dictionary<Resource, int>();
+		[JsonProperty] private List<ResourceAmount> resourceList=new List<ResourceAmount>();
 		public Unit(string name)
 		{
 			Name = name;
 			UnitId = GetId(unitIds);
 			AddToUnitList();
 		}
-		public List<Pomoc> GetResourcesList()
+		public List<ResourceAmount> GetResourcesList()
 		{
-			return pomocList;
+			return resourceList;
 		}
 		public void AddToUnitList()
 		{
@@ -49,19 +48,19 @@ namespace BattlePlanner
 		}
 		public void AddToResourceList(Resource resource, int capacity)
 		{
-			Pomoc pomoc = new Pomoc(resource, capacity);
-			pomocList.Add(pomoc);
+			ResourceAmount resourceAmount = new ResourceAmount(resource, capacity);
+			resourceList.Add(resourceAmount);
 		}
 
-		public Pomoc FindPomocByResource(Resource resource)
+		public ResourceAmount FindResourceInList(Resource resource)
 		{
-			return pomocList.Find(x => x.resource.Equals(resource));
+			return resourceList.Find(x => x.resource.Equals(resource));
 		}
 
 		public void RemoveResource(Resource resource)
 		{
-			Pomoc pomoc = FindPomocByResource(resource);
-			pomocList.Remove(pomoc);
+			ResourceAmount resourceAmount = FindResourceInList(resource);
+			resourceList.Remove(resourceAmount);
 		}
 		public bool CheckIfIdExists(string id)
 		{
@@ -85,7 +84,7 @@ namespace BattlePlanner
 		public override string ToString()
 		{
 			string resources = null;
-			foreach (var item in pomocList)
+			foreach (var item in resourceList)
 			{
 				resources += ($"{item.resource}\n");
 			}

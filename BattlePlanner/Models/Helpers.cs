@@ -27,9 +27,7 @@ namespace BattlePlanner
 		public static string GetPathSave()
 		{
 			PrintUserInput("Where would you like to save your battle plan (path)");
-			string path = ReadText();
-			path+= ($"{FileName}");
-			return path;
+			return ReadText();
 		}
 
 		public static void SaveBattlePlan(string plan,string path)
@@ -40,16 +38,8 @@ namespace BattlePlanner
 
 		public static void GetPathAndSave(BattlePlan battlePlan)
 		{
-			JsonSerializer serializer = new JsonSerializer();
-			JsonSerializerSettings settings = new JsonSerializerSettings();
-			settings.Formatting = Formatting.Indented;
-
-			using (StreamWriter sw = new StreamWriter(GetPathSave()))
-			using (JsonWriter writer = new JsonTextWriter(sw))
-			{
-				serializer.Serialize(writer, battlePlan);
-			}
-			//string jsonString = JsonConvert.SerializeObject(battlePlan, Formatting.Indented);
+			string jsonString = JsonConvert.SerializeObject(battlePlan, Formatting.Indented);
+			SaveBattlePlan(jsonString, GetPathSave());
 		}
 
 		public static void PrintPhase1Header()
