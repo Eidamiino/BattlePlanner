@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using Newtonsoft.Json;
 
 namespace BattlePlanner
 {
 	public class Resource
 	{
-		public string Name { get; }
-		private Dictionary<string, int> requirementsList = new Dictionary<string, int>();
-		public static List<Resource> resourceList = new List<Resource>();
+		private string Name { get; }
+		[JsonProperty] private Dictionary<string, int> requirementsList = new Dictionary<string, int>();
+		private static List<Resource> resourceList = new List<Resource>();
 
 		public Resource(string enteredName)
 		{
@@ -65,7 +66,7 @@ namespace BattlePlanner
 
 		public override string ToString()
 		{
-			return ($"Name: {this.Name}");
+			return ($"{this.Name}");
 		}
 	}
 }

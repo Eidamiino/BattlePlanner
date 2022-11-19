@@ -1,11 +1,15 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace BattlePlanner
 {
 	public class Helpers
 	{
 		public const int NextPhase = 0;
+		public const string FileName = @"\battleplan.json";
 		public static int GetRandom(int min, int max)
 		{
 			Random rand = new Random();
@@ -18,6 +22,24 @@ namespace BattlePlanner
 		public static void PrintUserInput(string inputText)
 		{
 			Console.Write($"\n{inputText}>");
+		}
+
+		public static void GetPathSave()
+		{
+			PrintUserInput("Where would you like to save your battle plan (path)");
+		}
+
+		public static void SaveBattlePlan(string plan,string path)
+		{
+			path+=($"{FileName}");
+			File.WriteAllText(@$"{path}", plan);
+		}
+
+		public static void GetPathAndSave(BattlePlan battlePlan)
+		{
+			string jsonString = JsonConvert.SerializeObject(battlePlan, Formatting.Indented);
+			GetPathSave();
+			SaveBattlePlan(jsonString, Helpers.ReadText());
 		}
 
 		public static void PrintPhase1Header()
@@ -58,8 +80,10 @@ namespace BattlePlanner
 		public static void PrintPhaseThree()
 		{
 			Console.WriteLine($"\n{NextPhase}: Next phase\n" +
-			                  "1: Add a unit\n" +
-			                  "2: Remove a unit");
+			                  "1: List current units\n" +
+			                  "2: Add a unit\n" +
+			                  "3: Add all\n" +
+			                  "4: Remove a unit");
 			PrintUserInput();
 		}
 
@@ -69,12 +93,25 @@ namespace BattlePlanner
 			{
 				case 1:
 				{
+					battlePlan.PrintAllUnits();
+					break;
+				}
+				case 2:
+				{
 					Unit.PrintAllUnits();
 					PrintUserInput("ID of a unit to add");
 					battlePlan.AddUnit(Unit.FindUnitById(ReadText()));
 					break;
 				}
-				case 2:
+				case 3:
+				{
+					foreach (var unit in Unit.GetUnitList())
+					{
+						battlePlan.AddUnit(unit);
+					}
+					break;
+				}
+				case 4:
 				{
 					battlePlan.PrintAllUnits();
 					PrintUserInput("ID of a unit to remove");

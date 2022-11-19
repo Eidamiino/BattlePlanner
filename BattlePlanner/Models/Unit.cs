@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using Newtonsoft.Json;
 
 namespace BattlePlanner
 {
 	public class Unit
 	{
 		public string Name { get; }
-		public string UnitId { get; }
-		public static List<string> unitIds = new List<string>();
-		public static List<Unit> unitList = new List<Unit>();
-		private Dictionary<Resource, int> resourcesList = new Dictionary<Resource, int>();
+		private string UnitId { get; }
+		private static List<string> unitIds = new List<string>();
+		private static List<Unit> unitList = new List<Unit>();
+		[JsonProperty] private Dictionary<Resource, int> resourcesList = new Dictionary<Resource, int>();
 		public Unit(string name)
 		{
 			Name = name;
@@ -39,6 +40,11 @@ namespace BattlePlanner
 			{
 				Console.WriteLine(item);
 			}
+		}
+
+		public static List<Unit> GetUnitList()
+		{
+			return unitList;
 		}
 		public void AddToResourceList(Resource resource, int capacity)
 		{

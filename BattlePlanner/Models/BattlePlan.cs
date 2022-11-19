@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using Newtonsoft.Json;
 
 namespace BattlePlanner
 {
 	public class BattlePlan
 	{
+		[JsonProperty]
 		private List<Unit> unitsList = new List<Unit>();
 		private Dictionary<string, int> summary = new Dictionary<string, int>();
 		public int AmountOfDays { get; }
