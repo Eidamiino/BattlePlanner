@@ -5,10 +5,19 @@ namespace BattlePlanner
 {
 	public class Helpers
 	{
+		public const int NextPhase = 0;
 		public static int GetRandom(int min, int max)
 		{
 			Random rand = new Random();
 			return rand.Next(min, max);
+		}
+		public static void PrintUserInput()
+		{
+			Console.Write("\nPick an option>");
+		}
+		public static void PrintUserInput(string inputText)
+		{
+			Console.Write($"\n{inputText}>");
 		}
 
 		public static void PrintPhase1Header()
@@ -28,7 +37,7 @@ namespace BattlePlanner
 
 		public static void PrintPhaseOne()
 		{
-			Console.WriteLine("\n0: Next phase\n" +
+			Console.WriteLine($"\n{NextPhase}: Next phase\n" +
 			                  "1: List all resources\n" +
 			                  "2: Add a new resource\n" +
 			                  "3: Edit a resource\n" +
@@ -38,7 +47,7 @@ namespace BattlePlanner
 
 		public static void PrintPhaseTwo()
 		{
-			Console.WriteLine("\n0: Next phase\n" +
+			Console.WriteLine($"\n{NextPhase}: Next phase\n" +
 			                  "1: List all units\n" +
 			                  "2: Add a new unit\n" +
 			                  "3: Add resource to unit\n" +
@@ -48,19 +57,10 @@ namespace BattlePlanner
 		}
 		public static void PrintPhaseThree()
 		{
-			Console.WriteLine("\n0: Next phase\n" +
+			Console.WriteLine($"\n{NextPhase}: Next phase\n" +
 			                  "1: Add a unit\n" +
 			                  "2: Remove a unit");
 			PrintUserInput();
-		}
-
-		public static void PrintUserInput()
-		{
-			Console.Write("Pick an option>");
-		}
-		public static void PrintUserInput(string inputText)
-		{
-			Console.Write($"{inputText}>");
 		}
 
 		public static void PhaseThreeUserInput(int input, BattlePlan battlePlan)
