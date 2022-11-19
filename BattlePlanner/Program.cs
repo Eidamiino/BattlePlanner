@@ -20,6 +20,9 @@ namespace BattlePlanner
 			} while (input != Helpers.NextPhase);
 			input = 1;
 
+			Console.WriteLine("hroch");
+			Resource.PrintAllResources();
+
 			Helpers.PrintPhase2Header();
 
 			do

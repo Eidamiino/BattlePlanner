@@ -7,8 +7,8 @@ namespace BattlePlanner
 {
 	public class Resource
 	{
-		private string Name { get; }
-		[JsonProperty] private Dictionary<string, int> requirementsList = new Dictionary<string, int>();
+		public string Name { get; private set; }
+		private Dictionary<string, int> requirementsList = new Dictionary<string, int>();
 		private static List<Resource> resourceList = new List<Resource>();
 
 		public Resource(string enteredName)
@@ -42,7 +42,7 @@ namespace BattlePlanner
 			Console.WriteLine("All resources:");
 			foreach (var item in resourceList)
 			{
-				Console.WriteLine($"{item.Name}");
+				Console.WriteLine(item);
 			}
 		}
 
@@ -66,7 +66,13 @@ namespace BattlePlanner
 
 		public override string ToString()
 		{
-			return ($"{this.Name}");
+			string requirements = null;
+			foreach (var requirement in requirementsList)
+			{
+				requirements += ($"\t{requirement.Key}-{requirement.Value}\n");
+			}
+
+			return ($"{Name}\n{requirements}");
 		}
 	}
 }

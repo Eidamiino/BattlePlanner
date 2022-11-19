@@ -24,9 +24,12 @@ namespace BattlePlanner
 			Console.Write($"\n{inputText}>");
 		}
 
-		public static void GetPathSave()
+		public static string GetPathSave()
 		{
 			PrintUserInput("Where would you like to save your battle plan (path)");
+			string path = ReadText();
+			path+= ($"{FileName}");
+			return path;
 		}
 
 		public static void SaveBattlePlan(string plan,string path)
@@ -37,9 +40,16 @@ namespace BattlePlanner
 
 		public static void GetPathAndSave(BattlePlan battlePlan)
 		{
-			string jsonString = JsonConvert.SerializeObject(battlePlan, Formatting.Indented);
-			GetPathSave();
-			SaveBattlePlan(jsonString, Helpers.ReadText());
+			JsonSerializer serializer = new JsonSerializer();
+			JsonSerializerSettings settings = new JsonSerializerSettings();
+			settings.Formatting = Formatting.Indented;
+
+			using (StreamWriter sw = new StreamWriter(GetPathSave()))
+			using (JsonWriter writer = new JsonTextWriter(sw))
+			{
+				serializer.Serialize(writer, battlePlan);
+			}
+			//string jsonString = JsonConvert.SerializeObject(battlePlan, Formatting.Indented);
 		}
 
 		public static void PrintPhase1Header()
@@ -206,11 +216,15 @@ namespace BattlePlanner
 		public static void EditResource(string nameToEdit)
 		{
 			Resource resource = Resource.FindResourceByName(nameToEdit);
-			resource.PrintAllRequirements();
 			PrintEditOptions();
 			switch (ReadNumber())
 			{
 				case 1:
+				{
+					resource.PrintAllRequirements();
+					break;
+				}
+				case 2:
 				{
 					PrintUserInput("Name of the requirement");
 					var name = ReadText();
@@ -219,8 +233,9 @@ namespace BattlePlanner
 					resource.AddRequirement(name, amount);
 					break;
 				}
-				case 2:
+				case 3:
 				{
+					resource.PrintAllRequirements();
 					PrintUserInput("Name of the requirement to remove");
 					resource.RemoveRequirement(ReadText());
 					break;
@@ -230,7 +245,7 @@ namespace BattlePlanner
 
 		public static void PrintEditOptions()
 		{
-			Console.WriteLine("1: Add Requirement\t2: Remove Requirement\t");
+			Console.WriteLine("1:List Current Requirements\t2: Add Requirement\t3: Remove Requirement\t");
 			PrintUserInput();
 		}
 

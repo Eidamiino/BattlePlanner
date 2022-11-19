@@ -8,19 +8,20 @@ namespace BattlePlanner
 	public class Unit
 	{
 		public string Name { get; }
-		private string UnitId { get; }
+		public string UnitId { get; private set; }
 		private static List<string> unitIds = new List<string>();
 		private static List<Unit> unitList = new List<Unit>();
-		[JsonProperty] private Dictionary<Resource, int> resourcesList = new Dictionary<Resource, int>();
+		[JsonProperty] private List<Pomoc> pomocList=new List<Pomoc>();
+		//[JsonProperty] private Dictionary<Resource, int> resourcesList = new Dictionary<Resource, int>();
 		public Unit(string name)
 		{
 			Name = name;
 			UnitId = GetId(unitIds);
 			AddToUnitList();
 		}
-		public Dictionary<Resource, int> GetResourcesList()
+		public List<Pomoc> GetResourcesList()
 		{
-			return resourcesList;
+			return pomocList;
 		}
 		public void AddToUnitList()
 		{
@@ -48,12 +49,19 @@ namespace BattlePlanner
 		}
 		public void AddToResourceList(Resource resource, int capacity)
 		{
-			resourcesList.Add(resource, capacity);
+			Pomoc pomoc = new Pomoc(resource, capacity);
+			pomocList.Add(pomoc);
+		}
+
+		public Pomoc FindPomocByResource(Resource resource)
+		{
+			return pomocList.Find(x => x.resource.Equals(resource));
 		}
 
 		public void RemoveResource(Resource resource)
 		{
-			resourcesList.Remove(resource);
+			Pomoc pomoc = FindPomocByResource(resource);
+			pomocList.Remove(pomoc);
 		}
 		public bool CheckIfIdExists(string id)
 		{
@@ -77,9 +85,9 @@ namespace BattlePlanner
 		public override string ToString()
 		{
 			string resources = null;
-			foreach (var resource in resourcesList)
+			foreach (var item in pomocList)
 			{
-				resources += ($"{resource}\n");
+				resources += ($"{item.resource}\n");
 			}
 			return ($"{UnitId} - {Name}\n{resources}");
 		}

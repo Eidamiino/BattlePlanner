@@ -58,12 +58,12 @@ namespace BattlePlanner
 			{
 				foreach (var resource in unit.GetResourcesList())
 				{
-					foreach (var requirement in resource.Key.GetRequirementsList())
+					foreach (var requirement in resource.resource.GetRequirementsList())
 					{
 						if (!summary.ContainsKey(requirement.Key))
 							AddResourceSummary(requirement.Key);
 						
-						var num = requirement.Value * resource.Value * AmountOfDays;
+						var num = requirement.Value * resource.amount * AmountOfDays;
 						AddAmountSummaryAt(requirement.Key, num);
 					}
 				}
