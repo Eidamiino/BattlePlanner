@@ -9,6 +9,11 @@ namespace BattlePlanner
 	{
 		static void Main(string[] args)
 		{
+			if (Helpers.CheckIfJsonExists())
+			{
+				BattlePlan plan = Helpers.LoadBattlePlan(@$"{Helpers.DefaultPath}{Helpers.FileName}");
+			}
+
 			Helpers.PrintPhase1Header();
 
 			var input=1;
@@ -19,9 +24,6 @@ namespace BattlePlanner
 				Helpers.PhaseOneUserInput(input);
 			} while (input != Helpers.NextPhase);
 			input = 1;
-
-			Console.WriteLine("hroch");
-			Resource.PrintAllResources();
 
 			Helpers.PrintPhase2Header();
 
