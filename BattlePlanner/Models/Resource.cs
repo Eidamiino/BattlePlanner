@@ -7,25 +7,28 @@ namespace BattlePlanner
 {
 	public class Resource
 	{
-		public string Name { get; private set; }
-		private Dictionary<string, int> requirementsList = new Dictionary<string, int>();
+		[JsonProperty] public string Name { get; private set; }
+		[JsonProperty] private Dictionary<string, int> requirementsList = new Dictionary<string, int>();
 		private static List<Resource> resourceList = new List<Resource>();
 
 		public Resource(string enteredName)
 		{
 			Name = enteredName;
-			AddToResources();
+			resourceList.Add(this);
 		}
 
-
+		public static List<Resource> GetResourceList()
+		{
+			return resourceList;
+		}
 		public Dictionary<string, int> GetRequirementsList()
 		{
 			return requirementsList;
 		}
 
-		public void AddToResources()
+		public static void AddResource(Resource resource)
 		{
-			resourceList.Add(this);
+			resourceList.Add(resource);
 		}
 		public static void RemoveResource(Resource resource)
 		{

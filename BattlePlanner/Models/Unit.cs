@@ -36,6 +36,7 @@ namespace BattlePlanner
 		}
 		public static void PrintAllUnits()
 		{
+			Console.WriteLine("All units:");
 			foreach (var item in unitList)
 			{
 				Console.WriteLine(item);

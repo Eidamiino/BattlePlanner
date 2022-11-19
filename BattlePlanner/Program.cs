@@ -9,14 +9,23 @@ namespace BattlePlanner
 	{
 		static void Main(string[] args)
 		{
+			var input = 1;
+
 			if (Helpers.CheckIfJsonExists())
 			{
 				BattlePlan plan = Helpers.LoadBattlePlan(@$"{Helpers.DefaultPath}{Helpers.FileName}");
+				do
+				{
+					Helpers.PrintLoadOptions();
+					input = Helpers.ReadNumber();
+					Helpers.LoadUserInput(input, plan);
+				} while (input!=0);
+
 			}
 
 			Helpers.PrintPhase1Header();
 
-			var input=1;
+			input=1;
 			do
 			{
 				Helpers.PrintPhaseOne();

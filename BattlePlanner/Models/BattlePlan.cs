@@ -16,6 +16,11 @@ namespace BattlePlanner
 			AmountOfDays = amountOfDays;
 		}
 
+		public List<Unit> GetUnitsList()
+		{
+			return unitsList;
+		}
+
 		public void AddResourceSummary(string requirement)
 		{
 			summary.Add(requirement, 0);

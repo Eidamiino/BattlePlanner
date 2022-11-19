@@ -68,7 +68,20 @@ namespace BattlePlanner
 			Console.WriteLine("\nPhase 3: Battle plan");
 			Console.WriteLine("Enter the amount of days:");
 		}
-
+		public static void PrintLoadOptions()
+		{
+			Console.WriteLine($"\n{NextPhase}: Continue\n" +
+			                  $"1: Clear all data\n" +
+			                  $"2: Clear units\n" +
+			                  $"3: Clear resources\n");
+			PrintUserInput();
+		}
+		public static void PrintFurtherLoadOptions()
+		{
+			Console.WriteLine($"\n1: Delete with definitions\n" +
+			                  $"2: Leave definitions\n");
+			PrintUserInput();
+		}
 		public static void PrintPhaseOne()
 		{
 			Console.WriteLine($"\n{NextPhase}: Next phase\n" +
@@ -99,6 +112,55 @@ namespace BattlePlanner
 			PrintUserInput();
 		}
 
+		public static void LoadUserInput(int input, BattlePlan battlePlan)
+		{
+			switch (input)
+			{
+				case 1:
+				{
+					battlePlan = null;
+					break;
+				}
+				case 2:
+				{
+					PrintFurtherLoadOptions();
+					switch (ReadNumber())
+					{
+						case 1:
+						{
+							battlePlan.GetUnitsList().Clear();
+							Unit.GetUnitList().Clear();
+							break;
+						}
+						case 2:
+						{
+							battlePlan.GetUnitsList().Clear();
+							break;
+						}
+					}
+					break;
+				}
+				case 3:
+				{
+					PrintFurtherLoadOptions();
+					switch (ReadNumber())
+					{
+						case 1:
+						{
+							battlePlan.GetUnitsList().ForEach(x => x.GetResourcesList().Clear());
+							Resource.GetResourceList().ForEach(x=>x.GetRequirementsList().Clear());
+							break;
+						}
+						case 2:
+						{
+							battlePlan.GetUnitsList().ForEach(x => x.GetResourcesList().Clear());
+							break;
+						}
+					}
+					break;
+				}
+			}
+		}
 		public static void PhaseThreeUserInput(int input, BattlePlan battlePlan)
 		{
 			switch (input)
