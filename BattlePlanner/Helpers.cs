@@ -11,11 +11,6 @@ namespace BattlePlanner
 		public const int NextPhase = 0;
 		public const string FileName = @"\battleplan.json";
 		public const string DefaultPath = @"C:\Users\Adam\Desktop\battlePlannerTest";
-		public static int GetRandom(int min, int max)
-		{
-			Random rand = new Random();
-			return rand.Next(min, max);
-		}
 		public static void PrintUserInput()
 		{
 			Console.Write("\nPick an option>");
