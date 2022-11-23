@@ -20,7 +20,7 @@ namespace BattlePlanner
 				BattlePlan plan = FileHelpers.LoadBattlePlan(@$"{FileHelpers.DefaultPath}{FileHelpers.FileName}");
 				do
 				{
-					PrintHelpers.PrintLoadOptions();
+					//PrintHelpers.PrintLoadOptions();
 					input = Helpers.ReadNumber();
 					Helpers.LoadPlanUserInput(input, plan);
 				} while (input!= PrintHelpers.NextPhase);
