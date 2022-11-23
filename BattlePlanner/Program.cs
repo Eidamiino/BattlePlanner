@@ -5,59 +5,69 @@ using Newtonsoft.Json;
 
 namespace BattlePlanner
 {
-	internal class Program
+    internal class Program
 	{
 		static void Main(string[] args)
 		{
+			var path = GetPath(args);
+			var fileHelpers = new FileHelpers(path);
+
+
 			var input = 1;
 
-			if (Helpers.CheckIfJsonExists())
+			if (fileHelpers.CheckIfJsonExists())
 			{
-				BattlePlan plan = Helpers.LoadBattlePlan(@$"{Helpers.DefaultPath}{Helpers.FileName}");
+				BattlePlan plan = FileHelpers.LoadBattlePlan(@$"{FileHelpers.DefaultPath}{FileHelpers.FileName}");
 				do
 				{
-					Helpers.PrintLoadOptions();
+					PrintHelpers.PrintLoadOptions();
 					input = Helpers.ReadNumber();
-					Helpers.LoadUserInput(input, plan);
-				} while (input!=Helpers.NextPhase);
+					Helpers.LoadPlanUserInput(input, plan);
+				} while (input!= PrintHelpers.NextPhase);
 			}
 
-			Helpers.PrintPhase1Header();
+			PrintHelpers.PrintPhase1Header();
 
-			input=1;
 			do
 			{
-				Helpers.PrintPhaseOne();
+				PrintHelpers.PrintPhaseOne();
 				input = Helpers.ReadNumber();
 				Helpers.PhaseOneUserInput(input);
-			} while (input != Helpers.NextPhase);
-			input = 1;
+			} while (input != PrintHelpers.NextPhase);
 
-			Helpers.PrintPhase2Header();
+			PrintHelpers.PrintPhase2Header();
 
 			do
 			{
-				Helpers.PrintPhaseTwo();
+				PrintHelpers.PrintPhaseTwo();
 				input = Helpers.ReadNumber();
 				Helpers.PhaseTwoUserInput(input);
-			} while (input != Helpers.NextPhase);
-			input = 1;
+			} while (input != PrintHelpers.NextPhase);
 
-			Helpers.PrintPhase3Header();
+			PrintHelpers.PrintPhase3Header();
 			BattlePlan battlePlan = new BattlePlan(Helpers.ReadNumber());
 
 			do
 			{
-				Helpers.PrintPhaseThree();
+				PrintHelpers.PrintPhaseThree();
 				input = Helpers.ReadNumber();
 				Helpers.PhaseThreeUserInput(input, battlePlan);
-			} while (input != Helpers.NextPhase);
-			input = 1;
-			
-			battlePlan.CalculateSummary();
-			Helpers.PrintSummary(battlePlan);
+			} while (input != PrintHelpers.NextPhase);
 
-			Helpers.GetPathAndSave(battlePlan);
+			battlePlan.CalculateSummary();
+			PrintHelpers.PrintSummary(battlePlan);
+
+			FileHelpers.GetPathAndSave(battlePlan);
+		}
+
+		private static string GetPath(string[] args)
+		{
+			string path;
+			if (args.Length != 0)
+				path = args[0];
+			else
+				path = FileHelpers.DefaultPath;
+			return path;
 		}
 	}
 }
