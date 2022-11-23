@@ -8,7 +8,7 @@ namespace BattlePlanner
 		public Resource resource { get;}
 		public int amount { get; }
 		
-		private static List<ResourceAmount> resourceAmountList=new List<ResourceAmount>();
+		public static List<ResourceAmount> resourceAmountList { get; private set; } =new List<ResourceAmount>();
 
 		public ResourceAmount(Resource resource, int amount)
 		{
@@ -16,17 +16,8 @@ namespace BattlePlanner
 			this.amount = amount;
 			resourceAmountList.Add(this);
 
-			if (!Resource.GetResourceList().Contains(resource))
+			if (!Resource.resourceList.Contains(resource))
 				Resource.AddResource(resource);
-		}
-
-		public static void PrintAllResourceAmountList()
-		{
-			Console.WriteLine("All resource amounts");
-			foreach (var resourceAmount in resourceAmountList)
-			{
-				Console.WriteLine($"{resourceAmount.resource} - {resourceAmount.amount}");
-			}
 		}
 	}
 }

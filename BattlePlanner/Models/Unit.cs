@@ -9,18 +9,14 @@ namespace BattlePlanner
 	{
 		public string Name { get; }
 		public string UnitId { get;}
-		private static List<string> unitIds = new List<string>();
-		private static List<Unit> unitList = new List<Unit>();
-		[JsonProperty] private List<ResourceAmount> resourceList=new List<ResourceAmount>();
+		public static List<string> unitIds { get; private set; } = new List<string>();
+		public static List<Unit> unitList { get; private set; } = new List<Unit>();
+		[JsonProperty] public List<ResourceAmount> resourceList { get; private set; } = new List<ResourceAmount>();
 		public Unit(string name)
 		{
 			Name = name;
 			UnitId = GetId(unitIds);
 			AddToUnitList();
-		}
-		public List<ResourceAmount> GetResourcesList()
-		{
-			return resourceList;
 		}
 		public void AddToUnitList()
 		{
@@ -34,25 +30,11 @@ namespace BattlePlanner
 		{
 			return unitList.Find(x => x.UnitId.Equals(id));
 		}
-		public static void PrintAllUnits()
-		{
-			Console.WriteLine("All units:");
-			foreach (var item in unitList)
-			{
-				Console.WriteLine(item);
-			}
-		}
-
-		public static List<Unit> GetUnitList()
-		{
-			return unitList;
-		}
 		public void AddToResourceList(Resource resource, int capacity)
 		{
 			ResourceAmount resourceAmount = new ResourceAmount(resource, capacity);
 			resourceList.Add(resourceAmount);
 		}
-
 		public ResourceAmount FindResourceInList(Resource resource)
 		{
 			return resourceList.Find(x => x.resource.Equals(resource));

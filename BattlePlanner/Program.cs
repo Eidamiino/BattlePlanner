@@ -19,8 +19,7 @@ namespace BattlePlanner
 					Helpers.PrintLoadOptions();
 					input = Helpers.ReadNumber();
 					Helpers.LoadUserInput(input, plan);
-				} while (input!=0);
-
+				} while (input!=Helpers.NextPhase);
 			}
 
 			Helpers.PrintPhase1Header();
@@ -56,7 +55,7 @@ namespace BattlePlanner
 			input = 1;
 			
 			battlePlan.CalculateSummary();
-			battlePlan.PrintSummary();
+			Helpers.PrintSummary(battlePlan);
 
 			Helpers.GetPathAndSave(battlePlan);
 		}

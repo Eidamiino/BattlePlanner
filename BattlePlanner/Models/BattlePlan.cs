@@ -7,18 +7,13 @@ namespace BattlePlanner
 {
 	public class BattlePlan
 	{
-		[JsonProperty] private List<Unit> unitsList = new List<Unit>();
-		private Dictionary<string, int> summary = new Dictionary<string, int>();
+		[JsonProperty] public List<Unit> unitsList { get; private set; } = new List<Unit>();
+		public Dictionary<string, int> summary { get; private set; }= new Dictionary<string, int>();
 		public int AmountOfDays { get; }
 
 		public BattlePlan(int amountOfDays)
 		{
 			AmountOfDays = amountOfDays;
-		}
-
-		public List<Unit> GetUnitsList()
-		{
-			return unitsList;
 		}
 
 		public void AddResourceSummary(string requirement)
@@ -28,23 +23,6 @@ namespace BattlePlanner
 		public void AddAmountSummaryAt(string requirement, int amount)
 		{
 			summary[requirement] += amount;
-		}
-
-		public void PrintSummary()
-		{
-			Console.WriteLine($"\nBattle Plan: {AmountOfDays} days");
-			foreach (var item in summary)
-			{
-				Console.WriteLine($"{item.Key} - {item.Value}");
-			}
-		}
-
-		public void PrintAllUnits()
-		{
-			foreach (var unit in unitsList)
-			{
-				Console.WriteLine(unit);
-			}
 		}
 		public void AddUnit(Unit unit)
 		{
@@ -60,9 +38,9 @@ namespace BattlePlanner
 		{
 			foreach (var unit in unitsList)
 			{
-				foreach (var resource in unit.GetResourcesList())
+				foreach (var resource in unit.resourceList)
 				{
-					foreach (var requirement in resource.resource.GetRequirementsList())
+					foreach (var requirement in resource.resource.requirementsList)
 					{
 						if (!summary.ContainsKey(requirement.Key))
 							AddResourceSummary(requirement.Key);

@@ -53,7 +53,25 @@ namespace BattlePlanner
 			string jsonString = JsonConvert.SerializeObject(battlePlan, Formatting.Indented);
 			SaveBattlePlan(jsonString, GetPathSave());
 		}
-
+		public static void PrintSummary(BattlePlan plan)
+		{
+			Console.WriteLine($"\nBattle Plan: {plan.AmountOfDays} days");
+			PrintList(plan.summary, (item) => $"{item.Key} - {item.Value}");
+		}
+		public static void PrintList<T>(IEnumerable<T> list)
+		{
+			foreach (var item in list)
+			{
+				Console.WriteLine(item);
+			}
+		}
+		public static void PrintList<T>(IEnumerable<T> list, Func<T, string> printFunc)
+		{
+			foreach (var item in list)
+			{
+				Console.WriteLine(printFunc(item));
+			}
+		}
 		public static void PrintPhase1Header()
 		{
 			Console.WriteLine("Battle Planner 3000!\n" +
@@ -118,7 +136,7 @@ namespace BattlePlanner
 			{
 				case 1:
 				{
-					battlePlan = null;
+					battlePlan = null;//nefunguje
 					break;
 				}
 				case 2:
@@ -128,13 +146,13 @@ namespace BattlePlanner
 					{
 						case 1:
 						{
-							battlePlan.GetUnitsList().Clear();
-							Unit.GetUnitList().Clear();
+							battlePlan.unitsList.Clear();
+							Unit.unitList.Clear();
 							break;
 						}
 						case 2:
 						{
-							battlePlan.GetUnitsList().Clear();
+							battlePlan.unitsList.Clear();
 							break;
 						}
 					}
@@ -147,13 +165,13 @@ namespace BattlePlanner
 					{
 						case 1:
 						{
-							battlePlan.GetUnitsList().ForEach(x => x.GetResourcesList().Clear());
-							Resource.GetResourceList().ForEach(x=>x.GetRequirementsList().Clear());
+							battlePlan.unitsList.ForEach(x => x.resourceList.Clear());
+							Resource.resourceList.ForEach(x=>x.requirementsList.Clear());
 							break;
 						}
 						case 2:
 						{
-							battlePlan.GetUnitsList().ForEach(x => x.GetResourcesList().Clear());
+							battlePlan.unitsList.ForEach(x => x.resourceList.Clear());
 							break;
 						}
 					}
@@ -167,19 +185,19 @@ namespace BattlePlanner
 			{
 				case 1:
 				{
-					battlePlan.PrintAllUnits();
+					PrintList(battlePlan.unitsList);
 					break;
 				}
 				case 2:
 				{
-					Unit.PrintAllUnits();
+					PrintList(Unit.unitList);
 					PrintUserInput("ID of a unit to add");
 					battlePlan.AddUnit(Unit.FindUnitById(ReadText()));
 					break;
 				}
 				case 3:
 				{
-					foreach (var unit in Unit.GetUnitList())
+					foreach (var unit in Unit.unitList)
 					{
 						battlePlan.AddUnit(unit);
 					}
@@ -187,7 +205,7 @@ namespace BattlePlanner
 				}
 				case 4:
 				{
-					battlePlan.PrintAllUnits();
+					PrintList(battlePlan.unitsList);
 					PrintUserInput("ID of a unit to remove");
 					battlePlan.RemoveUnit(Unit.FindUnitById(ReadText()));
 					break;
@@ -200,7 +218,7 @@ namespace BattlePlanner
 			{
 				case 1:
 				{
-					Unit.PrintAllUnits();
+					PrintList(Unit.unitList);
 					break;
 				}
 				case 2:
@@ -211,11 +229,11 @@ namespace BattlePlanner
 				}
 				case 3:
 				{
-					Unit.PrintAllUnits();
+					PrintList(Unit.unitList);
 					PrintUserInput("ID of the unit to add the resource to");
 					Unit unit = Unit.FindUnitById(ReadText());
 
-					Resource.PrintAllResources();
+					PrintList(Resource.resourceList);
 					PrintUserInput("Name of the resource to add");
 					var resource = Resource.FindResourceByName(ReadText());
 					PrintUserInput("Amount of resource");
@@ -226,7 +244,7 @@ namespace BattlePlanner
 				}
 				case 4:
 				{
-					Unit.PrintAllUnits();
+					PrintList(Unit.unitList);
 					PrintUserInput("ID of the unit to remove the resource from");
 					Unit unit = Unit.FindUnitById(ReadText());
 					Console.WriteLine(unit);
@@ -237,7 +255,7 @@ namespace BattlePlanner
 				}
 				case 5:
 				{
-					Unit.PrintAllUnits();
+					PrintList(Unit.unitList);
 					PrintUserInput("ID of the unit to remove");
 					Unit unit = Unit.FindUnitById(ReadText());
 					unit.RemoveUnit();
@@ -252,7 +270,7 @@ namespace BattlePlanner
 			{
 				case 1:
 				{
-					Resource.PrintAllResources();
+					PrintList(Resource.resourceList);
 					break;
 				}
 				case 2:
@@ -263,14 +281,14 @@ namespace BattlePlanner
 				}
 				case 3:
 					{
-						Resource.PrintAllResources();
+						PrintList(Resource.resourceList);
 						PrintUserInput("Pick a resource to edit");
 						EditResource(ReadText());
 						break;
 				}
 				case 4:
 				{
-					Resource.PrintAllResources();
+					PrintList(Resource.resourceList);
 					PrintUserInput("Pick a resource to remove");
 					Resource.RemoveResource(Resource.FindResourceByName(ReadText()));
 					break;
@@ -285,7 +303,7 @@ namespace BattlePlanner
 			{
 				case 1:
 				{
-					resource.PrintAllRequirements();
+					PrintList(resource.requirementsList);
 					break;
 				}
 				case 2:
@@ -299,7 +317,7 @@ namespace BattlePlanner
 				}
 				case 3:
 				{
-					resource.PrintAllRequirements();
+					PrintList(resource.requirementsList);
 					PrintUserInput("Name of the requirement to remove");
 					resource.RemoveRequirement(ReadText());
 					break;

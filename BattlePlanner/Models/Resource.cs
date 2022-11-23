@@ -8,24 +8,15 @@ namespace BattlePlanner
 	public class Resource
 	{
 		[JsonProperty] public string Name { get; private set; }
-		[JsonProperty] private Dictionary<string, int> requirementsList = new Dictionary<string, int>();
-		private static List<Resource> resourceList = new List<Resource>();
+		[JsonProperty] public Dictionary<string, int> requirementsList { get; private set; }= new Dictionary<string, int>();
+		public static List<Resource> resourceList { get; private set; } = new List<Resource>();
+		public Dictionary<string, int> requirementSum { get; private set; } = new Dictionary<string, int>();
 
 		public Resource(string enteredName)
 		{
 			Name = enteredName;
 			resourceList.Add(this);
 		}
-
-		public static List<Resource> GetResourceList()
-		{
-			return resourceList;
-		}
-		public Dictionary<string, int> GetRequirementsList()
-		{
-			return requirementsList;
-		}
-
 		public static void AddResource(Resource resource)
 		{
 			resourceList.Add(resource);
@@ -40,15 +31,6 @@ namespace BattlePlanner
 			return resourceList.Find(x => x.Name.Equals(name));
 		}
 
-		public static void PrintAllResources()
-		{
-			Console.WriteLine("All resources:");
-			foreach (var item in resourceList)
-			{
-				Console.WriteLine(item);
-			}
-		}
-
 		public void AddRequirement(string name, int capacity)
 		{
 			requirementsList.Add(name, capacity);
@@ -57,14 +39,6 @@ namespace BattlePlanner
 		public void RemoveRequirement(string name)
 		{
 			requirementsList.Remove(name);
-		}
-
-		public void PrintAllRequirements()
-		{
-			foreach (var item in requirementsList)
-			{
-				Console.WriteLine($"{item.Key}:{item.Value}");
-			}
 		}
 
 		public override string ToString()
