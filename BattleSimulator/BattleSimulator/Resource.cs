@@ -15,7 +15,7 @@ namespace BattlePlanner
 		public Resource(string enteredName)
 		{
 			Name = enteredName;
-			resourceList.Add(this);
+			AddResource(this);
 		}
 		public static void AddResource(Resource resource)
 		{

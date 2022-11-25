@@ -43,7 +43,7 @@ namespace BattlePlanner
 
 		private static BattlePlan PhaseThreeSwitch()
 		{
-			BattlePlan battlePlan = new BattlePlan(Helpers.ReadNumber());
+			var battlePlan = new BattlePlan(Helpers.ReadNumber());
 			PrintHelpers.PrintPhase3Header();
 			PhaseThree(battlePlan);
 			return battlePlan;
@@ -95,7 +95,7 @@ namespace BattlePlanner
 		private static BattlePlan JsonFileManip()
 		{
 			int input;
-			BattlePlan plan = FileHelpers.LoadBattlePlan(@$"{FileHelpers.DefaultPath}{FileHelpers.FileName}");
+			var plan = FileHelpers.LoadBattlePlan(@$"{FileHelpers.DefaultPath}{FileHelpers.FileName}");
 			do
 			{
 				PrintHelpers.PrintLoadOptions();
