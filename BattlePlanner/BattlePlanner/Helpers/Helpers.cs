@@ -18,47 +18,59 @@ namespace BattlePlanner
 					Unit.unitList.Clear();
 					battlePlan.unitsList.ForEach(x => x.resourceList.Clear());
 					Resource.resourceList.ForEach(x => x.requirementsList.Clear());
+					Resource.resourceList.Clear();
 
 					break;
 				}
 				case 2:
 				{
 					PrintHelpers.PrintFurtherLoadOptions();
-					switch (ReadNumber())
-					{
-						case 1:
-						{
-							battlePlan.unitsList.Clear();
-							Unit.unitList.Clear();
-							break;
-						}
-						case 2:
-						{
-							battlePlan.unitsList.Clear();
-							break;
-						}
-					}
+					ClearUnitsUserInput(battlePlan);
 
 					break;
 				}
 				case 3:
 				{
 					PrintHelpers.PrintFurtherLoadOptions();
-					switch (ReadNumber())
-					{
-						case 1:
-						{
-							battlePlan.unitsList.ForEach(x => x.resourceList.Clear());
-							Resource.resourceList.ForEach(x => x.requirementsList.Clear());
-							break;
-						}
-						case 2:
-						{
-							battlePlan.unitsList.ForEach(x => x.resourceList.Clear());
-							break;
-						}
-					}
+					ClearResourcesUserInput(battlePlan);
 
+					break;
+				}
+			}
+		}
+
+		private static void ClearResourcesUserInput(BattlePlan battlePlan)
+		{
+			switch (ReadNumber())
+			{
+				case 1:
+				{
+					battlePlan.unitsList.ForEach(x => x.resourceList.Clear());
+					Resource.resourceList.ForEach(x => x.requirementsList.Clear());
+					Resource.resourceList.Clear();
+					break;
+				}
+				case 2:
+				{
+					battlePlan.unitsList.ForEach(x => x.resourceList.Clear());
+					break;
+				}
+			}
+		}
+
+		private static void ClearUnitsUserInput(BattlePlan battlePlan)
+		{
+			switch (ReadNumber())
+			{
+				case 1:
+				{
+					battlePlan.unitsList.Clear();
+					Unit.unitList.Clear();
+					break;
+				}
+				case 2:
+				{
+					battlePlan.unitsList.Clear();
 					break;
 				}
 			}

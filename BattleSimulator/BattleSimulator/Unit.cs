@@ -71,7 +71,7 @@ namespace BattlePlanner
 			{
 				resources += ($"{item.resource}\n");
 			}
-			return ($"{UnitId} - {Name}\n{resources}");
+			return ($"{UnitId} - {Name}\n\t{resources}");
 		}
 	}
 }

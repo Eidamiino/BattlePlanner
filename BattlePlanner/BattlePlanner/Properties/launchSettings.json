@@ -1,7 +1,8 @@
 {
   "profiles": {
     "BattlePlanner": {
-      "commandName": "Project"
+      "commandName": "Project",
+      "commandLineArgs": "C:\\Users\\Adam\\Desktop\\battlePlannerTest"
     }
   }
 }

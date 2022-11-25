@@ -13,28 +13,45 @@ namespace BattlePlanner
 			var fileHelpers = new FileHelpers(path);
 
 
-			var input = 1;
-
 			if (fileHelpers.CheckIfJsonExists())
 			{
-				BattlePlan plan = FileHelpers.LoadBattlePlan(@$"{FileHelpers.DefaultPath}{FileHelpers.FileName}");
-				do
-				{
-					//PrintHelpers.PrintLoadOptions();
-					input = Helpers.ReadNumber();
-					Helpers.LoadPlanUserInput(input, plan);
-				} while (input!= PrintHelpers.NextPhase);
+				Console.WriteLine("Json loaded!");
+				JsonFileManip();
 			}
+				
 
-			PrintHelpers.PrintPhase1Header();
+			PhaseOne();
 
+			PhaseTwo();
+
+			var battlePlan = PhaseThree();
+
+			battlePlan.CalculateSummary();
+			PrintHelpers.PrintSummary(battlePlan);
+
+			FileHelpers.GetPathAndSave(battlePlan);
+		}
+
+
+		private static BattlePlan PhaseThree()
+		{
+			PrintHelpers.PrintPhase3Header();
+			BattlePlan battlePlan = new BattlePlan(Helpers.ReadNumber());
+
+			int input;
 			do
 			{
-				PrintHelpers.PrintPhaseOne();
+				PrintHelpers.PrintPhaseThree();
 				input = Helpers.ReadNumber();
-				Helpers.PhaseOneUserInput(input);
+				Helpers.PhaseThreeUserInput(input, battlePlan);
 			} while (input != PrintHelpers.NextPhase);
 
+			return battlePlan;
+		}
+
+		private static void PhaseTwo()
+		{
+			int input;
 			PrintHelpers.PrintPhase2Header();
 
 			do
@@ -43,21 +60,31 @@ namespace BattlePlanner
 				input = Helpers.ReadNumber();
 				Helpers.PhaseTwoUserInput(input);
 			} while (input != PrintHelpers.NextPhase);
+		}
 
-			PrintHelpers.PrintPhase3Header();
-			BattlePlan battlePlan = new BattlePlan(Helpers.ReadNumber());
+		private static void PhaseOne()
+		{
+			int input;
+			PrintHelpers.PrintPhase1Header();
 
 			do
 			{
-				PrintHelpers.PrintPhaseThree();
+				PrintHelpers.PrintPhaseOne();
 				input = Helpers.ReadNumber();
-				Helpers.PhaseThreeUserInput(input, battlePlan);
+				Helpers.PhaseOneUserInput(input);
 			} while (input != PrintHelpers.NextPhase);
+		}
 
-			battlePlan.CalculateSummary();
-			PrintHelpers.PrintSummary(battlePlan);
-
-			FileHelpers.GetPathAndSave(battlePlan);
+		private static void JsonFileManip()
+		{
+			int input;
+			BattlePlan plan = FileHelpers.LoadBattlePlan(@$"{FileHelpers.DefaultPath}{FileHelpers.FileName}");
+			do
+			{
+				PrintHelpers.PrintLoadOptions();
+				input = Helpers.ReadNumber();
+				Helpers.LoadPlanUserInput(input, plan);
+			} while (input != PrintHelpers.NextPhase);
 		}
 
 		private static string GetPath(string[] args)

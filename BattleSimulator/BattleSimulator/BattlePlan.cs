@@ -15,15 +15,6 @@ namespace BattlePlanner
 		{
 			AmountOfDays = amountOfDays;
 		}
-
-		public void AddResourceSummary(string requirement)
-		{
-			summary.Add(requirement, 0);
-		}
-		public void AddAmountSummaryAt(string requirement, int amount)
-		{
-			summary[requirement] += amount;
-		}
 		public void AddUnit(Unit unit)
 		{
 			unitsList.Add(unit);
@@ -43,7 +34,7 @@ namespace BattlePlanner
 					foreach (var requirement in resource.resource.requirementsList)
 					{
 						if (!summary.ContainsKey(requirement.Key))
-							AddResourceSummary(requirement.Key);
+							AddRequirementSummary(requirement.Key);
 						
 						var num = requirement.Value * resource.amount * AmountOfDays;
 						AddAmountSummaryAt(requirement.Key, num);
@@ -51,6 +42,14 @@ namespace BattlePlanner
 				}
 			}
 			
+		}
+		public void AddRequirementSummary(string requirement)
+		{
+			summary.Add(requirement, 0);
+		}
+		public void AddAmountSummaryAt(string requirement, int amount)
+		{
+			summary[requirement] += amount;
 		}
 	}
 }
