@@ -9,6 +9,9 @@ namespace BattlePlanner
 	{
 		static void Main(string[] args)
 		{
+			var jsonLoaded=false;
+			BattlePlan battlePlan = null;
+
 			var path = GetPath(args);
 			var fileHelpers = new FileHelpers(path);
 
@@ -16,7 +19,9 @@ namespace BattlePlanner
 			if (fileHelpers.CheckIfJsonExists())
 			{
 				Console.WriteLine("Json loaded!");
-				JsonFileManip();
+
+				battlePlan= JsonFileManip();
+				jsonLoaded =true;
 			}
 				
 
@@ -24,7 +29,10 @@ namespace BattlePlanner
 
 			PhaseTwo();
 
-			var battlePlan = PhaseThree();
+			if (jsonLoaded)
+				 battlePlan = PhaseThreeSwitch(battlePlan);
+			else
+				battlePlan = PhaseThreeSwitch();
 
 			battlePlan.CalculateSummary();
 			PrintHelpers.PrintSummary(battlePlan);
@@ -33,11 +41,22 @@ namespace BattlePlanner
 		}
 
 
-		private static BattlePlan PhaseThree()
+		private static BattlePlan PhaseThreeSwitch()
+		{
+			BattlePlan battlePlan = new BattlePlan(Helpers.ReadNumber());
+			PrintHelpers.PrintPhase3Header();
+			PhaseThree(battlePlan);
+			return battlePlan;
+		}
+		private static BattlePlan PhaseThreeSwitch(BattlePlan battlePlan)
 		{
 			PrintHelpers.PrintPhase3Header();
-			BattlePlan battlePlan = new BattlePlan(Helpers.ReadNumber());
+			PhaseThree(battlePlan);
+			return battlePlan;
+		}
 
+		private static void PhaseThree(BattlePlan battlePlan)
+		{
 			int input;
 			do
 			{
@@ -45,8 +64,6 @@ namespace BattlePlanner
 				input = Helpers.ReadNumber();
 				Helpers.PhaseThreeUserInput(input, battlePlan);
 			} while (input != PrintHelpers.NextPhase);
-
-			return battlePlan;
 		}
 
 		private static void PhaseTwo()
@@ -75,7 +92,7 @@ namespace BattlePlanner
 			} while (input != PrintHelpers.NextPhase);
 		}
 
-		private static void JsonFileManip()
+		private static BattlePlan JsonFileManip()
 		{
 			int input;
 			BattlePlan plan = FileHelpers.LoadBattlePlan(@$"{FileHelpers.DefaultPath}{FileHelpers.FileName}");
@@ -85,6 +102,8 @@ namespace BattlePlanner
 				input = Helpers.ReadNumber();
 				Helpers.LoadPlanUserInput(input, plan);
 			} while (input != PrintHelpers.NextPhase);
+
+			return plan;
 		}
 
 		private static string GetPath(string[] args)
