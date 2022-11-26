@@ -47,6 +47,14 @@ namespace BattlePlanner
 			Console.WriteLine("\nPhase 3: Battle plan");
 			Console.WriteLine("Enter the amount of days:");
 		}
+
+		public static void PrintSaveOptions()
+		{
+			Console.WriteLine("\n1: Save as Json\n" +
+			                  "2: Save as binary\n" +
+			                  "3: Save as both\n");
+			PrintUserInput();
+		}
 		public static void PrintLoadOptions()
 		{
 			Console.WriteLine($"\n{NextPhase}: Continue\n" +

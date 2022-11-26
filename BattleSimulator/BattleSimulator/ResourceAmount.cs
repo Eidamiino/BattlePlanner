@@ -1,14 +1,17 @@
-﻿using System;
+﻿using BinaryPack.Attributes;
+using BinaryPack.Enums;
+using System;
 using System.Collections.Generic;
 
 namespace BattlePlanner
 {
+	[Serializable]
 	public class ResourceAmount
-	{
+	{ 
 		public Resource resource { get;}
 		public int amount { get; }
 		
-		public static List<ResourceAmount> resourceAmountList { get; private set; } =new List<ResourceAmount>();
+		public static List<ResourceAmount> resourceAmountList { get;  set; } =new List<ResourceAmount>();
 
 		public ResourceAmount(Resource resource, int amount)
 		{

@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using BinaryPack.Attributes;
+using BinaryPack.Enums;
 using Newtonsoft.Json;
 
 namespace BattlePlanner
 {
+	[Serializable]
 	public class Resource
 	{
-		[JsonProperty] public string Name { get; private set; }
-		[JsonProperty] public Dictionary<string, int> requirementsList { get; private set; }= new Dictionary<string, int>();
+		[JsonProperty] public string Name { get;  set; }
+		[JsonProperty] public Dictionary<string, int> requirementsList { get;  set; }= new Dictionary<string, int>();
 		public static List<Resource> resourceList { get; private set; } = new List<Resource>();
-		public Dictionary<string, int> requirementSum { get; private set; } = new Dictionary<string, int>();
 
 		public Resource(string enteredName)
 		{

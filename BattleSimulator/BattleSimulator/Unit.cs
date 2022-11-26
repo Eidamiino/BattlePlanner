@@ -1,17 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using BinaryPack.Attributes;
+using BinaryPack.Enums;
 using Newtonsoft.Json;
 
 namespace BattlePlanner
 {
+	[Serializable]
 	public class Unit
 	{
 		public string Name { get; }
 		public string UnitId { get;}
 		public static List<string> unitIds { get; private set; } = new List<string>();
 		public static List<Unit> unitList { get; private set; } = new List<Unit>();
-		[JsonProperty] public List<ResourceAmount> resourceList { get; private set; } = new List<ResourceAmount>();
+		[JsonProperty] public List<ResourceAmount> resourceList { get;  set; } = new List<ResourceAmount>();
 		public Unit(string name)
 		{
 			Name = name;

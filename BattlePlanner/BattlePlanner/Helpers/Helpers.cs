@@ -10,6 +10,7 @@ namespace BattlePlanner
 	{
 		public static void LoadPlanUserInput(int input, BattlePlan battlePlan)
 		{
+			battlePlan.ResetDaysAmount();
 			switch (input)
 			{
 				case 1:
@@ -19,21 +20,18 @@ namespace BattlePlanner
 					battlePlan.unitsList.ForEach(x => x.resourceList.Clear());
 					Resource.resourceList.ForEach(x => x.requirementsList.Clear());
 					Resource.resourceList.Clear();
-
 					break;
 				}
 				case 2:
 				{
 					PrintHelpers.PrintFurtherLoadOptions();
 					ClearUnitsUserInput(battlePlan);
-
 					break;
 				}
 				case 3:
 				{
 					PrintHelpers.PrintFurtherLoadOptions();
 					ClearResourcesUserInput(battlePlan);
-
 					break;
 				}
 			}
@@ -76,6 +74,28 @@ namespace BattlePlanner
 			}
 		}
 
+		public static void SavingUserInput(int input, BattlePlan battlePlan)
+		{
+			switch (input)
+			{
+				case 1:
+				{
+					FileHelpers.GetPathAndSave(battlePlan);
+					break;
+				}
+				case 2:
+				{
+					FileHelpers.GetPathAndSaveBinary(battlePlan);
+					break;
+				}
+				case 3:
+				{
+					FileHelpers.GetPathAndSave(battlePlan);
+					FileHelpers.GetPathAndSaveBinary(battlePlan);
+					break;
+				}
+			}
+		}
 		public static void PhaseThreeUserInput(int input, BattlePlan battlePlan)
 		{
 			switch (input)
@@ -233,6 +253,14 @@ namespace BattlePlanner
 		public static string ReadText()
 		{
 			return Console.ReadLine();
+		}
+		private static string ReadValue(string label, string defaultValue)
+		{
+			Console.Write($"{label} (default: {defaultValue}): ");
+			string value = Console.ReadLine();
+			if (value == "")
+				return defaultValue;
+			return value;
 		}
 	}
 }

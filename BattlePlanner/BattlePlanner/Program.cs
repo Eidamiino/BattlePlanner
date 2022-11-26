@@ -9,7 +9,7 @@ namespace BattlePlanner
 	{
 		static void Main(string[] args)
 		{
-			var jsonLoaded=false;
+			var fileLoaded=false;
 			BattlePlan battlePlan = null;
 
 			var path = GetPath(args);
@@ -18,18 +18,25 @@ namespace BattlePlanner
 
 			if (fileHelpers.CheckIfJsonExists())
 			{
-				Console.WriteLine("Json loaded!");
+				Console.WriteLine("BattlePlan loaded!");
 
-				battlePlan= JsonFileManip();
-				jsonLoaded =true;
+				battlePlan= JsonFileManip(path);
+
+				fileLoaded =true;
 			}
-				
+			else if (fileHelpers.CheckIfDatExists())
+			{
+				Console.WriteLine("BattlePlan loaded!");
+
+				battlePlan = DatFileManip(path);
+				fileLoaded = true;
+			}
 
 			PhaseOne();
 
 			PhaseTwo();
 
-			if (jsonLoaded)
+			if (fileLoaded)
 				 battlePlan = PhaseThreeSwitch(battlePlan);
 			else
 				battlePlan = PhaseThreeSwitch();
@@ -37,20 +44,26 @@ namespace BattlePlanner
 			battlePlan.CalculateSummary();
 			PrintHelpers.PrintSummary(battlePlan);
 
-			FileHelpers.GetPathAndSave(battlePlan);
+			SavePlan(battlePlan);
 		}
 
+		private static void SavePlan(BattlePlan battlePlan)
+		{
+			PrintHelpers.PrintSaveOptions();
+			Helpers.SavingUserInput(Helpers.ReadNumber(),battlePlan);
 
+		}
 		private static BattlePlan PhaseThreeSwitch()
 		{
-			var battlePlan = new BattlePlan(Helpers.ReadNumber());
 			PrintHelpers.PrintPhase3Header();
+			var battlePlan = new BattlePlan(Helpers.ReadNumber());
 			PhaseThree(battlePlan);
 			return battlePlan;
 		}
 		private static BattlePlan PhaseThreeSwitch(BattlePlan battlePlan)
 		{
 			PrintHelpers.PrintPhase3Header();
+			battlePlan.AmountOfDays = Helpers.ReadNumber();
 			PhaseThree(battlePlan);
 			return battlePlan;
 		}
@@ -92,10 +105,23 @@ namespace BattlePlanner
 			} while (input != PrintHelpers.NextPhase);
 		}
 
-		private static BattlePlan JsonFileManip()
+		private static BattlePlan JsonFileManip(string path)
 		{
 			int input;
-			var plan = FileHelpers.LoadBattlePlan(@$"{FileHelpers.DefaultPath}{FileHelpers.FileName}");
+			var plan = FileHelpers.LoadBattlePlanJson(@$"{path}{FileHelpers.FileNameJson}");
+			do
+			{
+				PrintHelpers.PrintLoadOptions();
+				input = Helpers.ReadNumber();
+				Helpers.LoadPlanUserInput(input, plan);
+			} while (input != PrintHelpers.NextPhase);
+
+			return plan;
+		}
+		private static BattlePlan DatFileManip(string path)
+		{
+			int input;
+			var plan = FileHelpers.LoadBattlePlanDat(@$"{path}{FileHelpers.FileNameDat}");
 			do
 			{
 				PrintHelpers.PrintLoadOptions();
